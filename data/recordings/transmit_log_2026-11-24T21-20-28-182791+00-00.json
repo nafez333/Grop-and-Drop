@@ -1,0 +1,33 @@
+{
+  "timestamp": "2026-11-24T21:20:28.182791+00:00",
+  "transmissions": [
+    {
+      "bit": 0,
+      "cpu_state": "idle",
+      "duration_seconds": 1.0,
+      "target_percent": 0,
+      "timestamp": "2026-11-24T21:20:28.182824+00:00"
+    },
+    {
+      "bit": 0,
+      "cpu_state": "idle",
+      "duration_seconds": 1.0,
+      "target_percent": 0,
+      "timestamp": "2026-11-24T21:20:29.184463+00:00"
+    },
+    {
+      "bit": 0,
+      "cpu_state": "idle",
+      "duration_seconds": 1.0,
+      "target_percent": 0,
+      "timestamp": "2026-11-24T21:20:30.190746+00:00"
+    },
+    {
+      "bit": 1,
+      "cpu_state": "load",
+      "duration_seconds": 1.0,
+      "target_percent": 100,
+      "timestamp": "2026-11-24T21:20:31.192481+00:00"
+    }
+  ]
+}

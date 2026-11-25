@@ -1,0 +1,358 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+    <meta name="theme-color" content="#101923">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; img-src data: blob:; connect-src 'none'; font-src 'none'; media-src blob:; object-src 'none'; base-uri 'none'; form-action 'none'">
+    <title>Offline Receiver — مستقبل مستقل</title><script>(function(root){'use strict';const attempts=[];root.__networkAttempts=attempts;function block(kind){return function(){const attempt={kind,time:new Date().toISOString(),target:String(arguments[0]||'')};attempts.push(attempt);try{const banner=document.getElementById('networkWarning')||document.createElement('div');banner.id='networkWarning';banner.textContent='حُظر اتصال شبكي / Network attempt blocked: '+kind;banner.style.cssText='position:sticky;top:0;z-index:99999;background:#a20;color:#fff;padding:12px;font-weight:bold';if(!banner.isConnected&&document.body)document.body.prepend(banner);}catch(error){console.error('Unable to show network guard banner',error);}if(kind==='fetch')return Promise.reject(new TypeError('Offline policy blocked fetch'));if(kind==='XMLHttpRequest'){throw new Error('Offline policy blocked XMLHttpRequest');}if(kind==='sendBeacon')return false;throw new Error('Offline policy blocked '+kind);};}try{root.fetch=block('fetch');root.XMLHttpRequest=function(){return block('XMLHttpRequest')();};root.WebSocket=function(){return block('WebSocket')();};root.EventSource=function(){return block('EventSource')();};if(root.navigator&&typeof root.navigator.sendBeacon==='function'){try{Object.defineProperty(root.navigator,'sendBeacon',{configurable:false,value:block('sendBeacon')});}catch(error){root.navigator.sendBeacon=block('sendBeacon');}}}catch(error){attempts.push({kind:'guard-install',error:String(error)});}root.networkSelfTest=()=>({pass:attempts.length===0,count:attempts.length,attempts:attempts.slice()});})(globalThis);
+</script>
+    <style>
+        :root {
+            color-scheme: dark;
+            --bg: #101923;
+            --panel: #192632;
+            --line: #30404d;
+            --text: #edf4f8;
+            --muted: #aab8c4;
+            --accent: #55d6be;
+            --warn: #f5b942;
+            --bad: #ff6b81
+        }
+
+        * {
+            box-sizing: border-box
+        }
+
+        body {
+            margin: 0;
+            background: var(--bg);
+            color: var(--text);
+            font: 16px system-ui, -apple-system, "Segoe UI", sans-serif;
+            padding: env(safe-area-inset-top) 14px env(safe-area-inset-bottom);
+            max-width: 900px;
+            margin-inline: auto
+        }
+
+        header {
+            position: sticky;
+            top: 0;
+            z-index: 3;
+            background: #101923ee;
+            padding: 10px 0
+        }
+
+        .banner {
+            border: 1px solid var(--line);
+            border-radius: 12px;
+            padding: 12px;
+            background: #14222d;
+            line-height: 1.6
+        }
+
+        .secure {
+            font-weight: 700
+        }
+
+        .secure.ok {
+            color: var(--accent)
+        }
+
+        .secure.no {
+            color: var(--bad)
+        }
+
+        h1 {
+            font-size: 1.25rem;
+            margin: 10px 0
+        }
+
+        h2 {
+            font-size: 1.08rem;
+            margin: 0 0 10px
+        }
+
+        section {
+            background: var(--panel);
+            border: 1px solid var(--line);
+            border-radius: 14px;
+            padding: 14px;
+            margin: 12px 0
+        }
+
+        .row {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            align-items: center
+        }
+
+        button,
+        select,
+        input {
+            font: inherit
+        }
+
+        button {
+            min-height: 48px;
+            padding: 8px 14px;
+            border-radius: 10px;
+            border: 1px solid #47606f;
+            background: #233746;
+            color: var(--text);
+            cursor: pointer
+        }
+
+        button:disabled {
+            opacity: .5
+        }
+
+        button.primary {
+            background: #146d60;
+            border-color: #55d6be
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 8px
+        }
+
+        .stat {
+            background: #101923;
+            padding: 10px;
+            border-radius: 9px;
+            color: var(--muted)
+        }
+
+        .stat b {
+            display: block;
+            color: var(--text);
+            margin-top: 3px
+        }
+
+        canvas {
+            width: 100%;
+            height: 260px;
+            display: block;
+            border-radius: 8px
+        }
+
+        .message {
+            padding: 10px;
+            border-radius: 8px;
+            margin: 8px 0;
+            background: #15232e
+        }
+
+        .message.error {
+            border-inline-start: 4px solid var(--bad)
+        }
+
+        .message.warning {
+            border-inline-start: 4px solid var(--warn)
+        }
+
+        .message.success {
+            border-inline-start: 4px solid var(--accent)
+        }
+
+        .bits {
+            font: 14px ui-monospace, Consolas, monospace;
+            overflow-wrap: anywhere;
+            direction: ltr;
+            text-align: left;
+            user-select: text
+        }
+
+        .record {
+            border-top: 1px solid var(--line);
+            padding: 10px 0
+        }
+
+        .record-actions button {
+            min-height: 44px;
+            padding: 6px 10px
+        }
+
+        .small {
+            font-size: .9rem;
+            color: var(--muted)
+        }
+
+        label {
+            display: inline-flex;
+            gap: 7px;
+            align-items: center;
+            min-height: 48px
+        }
+
+        select,
+        input[type=range] {
+            min-height: 48px;
+            background: #101923;
+            color: var(--text);
+            border: 1px solid var(--line);
+            border-radius: 9px;
+            padding: 8px
+        }
+
+        .inline {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap
+        }
+
+        .hidden {
+            display: none !important
+        }
+
+        @media(min-width:620px) {
+            .stats {
+                grid-template-columns: repeat(4, minmax(0, 1fr))
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <div class="banner"><strong>🔌 وضع مستقل — بدون شبكة | Offline standalone — no network</strong><br><span
+                id="secure" class="secure">Checking secure context…</span>
+            <div id="notice" class="small" role="status" aria-live="polite"></div>
+        </div>
+        <h1>مستقبل الإشارات — Offline Receiver</h1>
+    </header>
+    <main>
+        <section>
+            <h2>التسجيل / Recording</h2>
+            <div class="row"><button id="start" class="primary">بدء التسجيل / Start</button><button id="stop"
+                    disabled>إيقاف / Stop</button><button id="export">تصدير JSON / Export</button><label><button
+                        id="chooseImport">استيراد JSON / Import</button><input id="importFile" class="hidden"
+                        type="file" accept=".json,application/json"></label><button id="analyze">تحليل /
+                    Decode</button><button id="clearChart">مسح الرسم / Clear chart</button></div>
+            <div class="stats">
+                <div class="stat">Sample rate<b id="rate">20 Hz</b></div>
+                <div class="stat">Duration<b id="duration">0.0 s</b></div>
+                <div class="stat">Samples<b id="count">0</b></div>
+                <div class="stat">Sensor<b id="sensorType">none</b></div>
+            </div>
+        </section>
+        <section>
+            <h2>الرسم الحي / Live chart (X, Y, Z)</h2><canvas id="chart" aria-label="Live sensor chart"></canvas>
+        </section>
+        <section>
+            <h2>إعدادات التحليل / Decode settings</h2>
+            <div class="inline"><label>Bit duration<select id="bitDuration">
+                        <option value="0.25">0.25 s</option>
+                        <option value="0.5">0.5 s</option>
+                        <option value="1" selected>1.0 s</option>
+                        <option value="2">2.0 s</option>
+                    </select></label><label>Threshold<select id="thresholdMode">
+                        <option value="otsu">Otsu</option>
+                        <option value="idle">Idle</option>
+                        <option value="adaptive">Adaptive</option>
+                        <option value="percentile">Percentile</option>
+                        <option value="manual">Manual</option>
+                    </select></label><label id="manualWrap" class="hidden">Manual threshold<input id="manualThreshold"
+                        type="range" min="0" max="100" value="50"><span id="manualValue">50%</span></label><button
+                    id="calibrate">معايرة الخمول / Calibrate idle (3s)</button></div>
+        </section>
+        <section>
+            <h2>نتيجة التحليل / Decode result</h2>
+            <div class="stats">
+                <div class="stat">Sync<b id="syncResult">—</b></div>
+                <div class="stat">CRC valid<b id="crcResult">—</b></div>
+                <div class="stat">Confidence<b id="confidence">—</b></div>
+                <div class="stat">Gesture<b id="gesture">—</b></div>
+            </div>
+            <p>Message</p>
+            <div id="decodedMessage" class="message">لا توجد نتيجة / No result</div>
+            <p>Raw bits</p>
+            <div class="row"><code id="bits" class="bits">—</code><button id="copyBits">نسخ / Copy</button></div>
+        </section>
+        <section>
+            <h2>نتيجة العتبة / Threshold diagnostics</h2><div id="modeResult" class="small">Mode: —</div>
+        </section>
+        <section>
+            <h2>التسجيلات المحفوظة / Saved recordings</h2>
+            <div id="recordings" class="small">Loading…</div>
+        </section>
+        <section>
+            <h2>الاختبار الداخلي / Parity self-test</h2>
+            <p class="small">Compare embedded fixture against the on-device decoder.</p><button id="selfTest">Run parity
+                self-test</button>
+            <div id="testResult" role="status"></div>
+        </section>
+    </main>
+        <section><h2>🩺 تشخيص الجهاز / Device diagnostics</h2><button id="runDiagnostics">تشغيل التشخيص / Run diagnostics</button><button id="copyDiagnostics">نسخ التقرير / Copy report</button><pre id="diagnosticsReport" class="message" style="white-space:pre-wrap;direction:ltr;text-align:left"></pre></section>
+    <script>globalThis.APP_PROTOCOL={"SYNC_HEADER": [1, 0, 1, 0, 1, 0, 1, 0], "END_OF_MESSAGE": [1, 1, 1, 1], "CRC_POLYNOMIAL": 4129, "CRC_INIT": 65535, "SAMPLE_RATE": 20.0, "BIT_DURATION_DEFAULT": 1.0};globalThis.PARITY_FIXTURE={"recording": {"metadata": {"timestamp": "2026-11-24T12:00:00.000Z", "duration_seconds": 1.0, "sample_rate_hz": 20.0, "sensor_type": "magnetometer", "device_info": "Synthetic example: 20 Hz three-axis magnetometer capture"}, "samples": [{"t": 0.0, "x": 22.41, "y": -8.12, "z": 41.06, "alpha": 112.3, "beta": 18.6, "gamma": -7.2}, {"t": 0.05, "x": 22.38, "y": -8.08, "z": 41.11, "alpha": 112.5, "beta": 18.5, "gamma": -7.1}, {"t": 0.1, "x": 22.45, "y": -8.15, "z": 41.02, "alpha": 112.4, "beta": 18.7, "gamma": -7.3}, {"t": 0.15, "x": 22.36, "y": -8.1, "z": 41.08, "alpha": 112.2, "beta": 18.6, "gamma": -7.2}, {"t": 0.2, "x": 22.42, "y": -8.04, "z": 41.13, "alpha": 112.6, "beta": 18.4, "gamma": -7.0}, {"t": 0.25, "x": 22.39, "y": -8.11, "z": 41.05, "alpha": 112.5, "beta": 18.6, "gamma": -7.1}, {"t": 0.3, "x": 22.47, "y": -8.17, "z": 41.09, "alpha": 112.7, "beta": 18.8, "gamma": -7.4}, {"t": 0.35, "x": 22.43, "y": -8.06, "z": 41.15, "alpha": 112.6, "beta": 18.7, "gamma": -7.1}, {"t": 0.4, "x": 22.35, "y": -8.09, "z": 41.04, "alpha": 112.4, "beta": 18.5, "gamma": -7.2}, {"t": 0.45, "x": 22.4, "y": -8.13, "z": 41.1, "alpha": 112.3, "beta": 18.6, "gamma": -7.3}, {"t": 0.5, "x": 22.44, "y": -8.02, "z": 41.07, "alpha": 112.5, "beta": 18.4, "gamma": -7.0}, {"t": 0.55, "x": 22.41, "y": -8.08, "z": 41.12, "alpha": 112.6, "beta": 18.5, "gamma": -7.2}, {"t": 0.6, "x": 22.48, "y": -8.15, "z": 41.08, "alpha": 112.8, "beta": 18.7, "gamma": -7.3}, {"t": 0.65, "x": 22.4, "y": -8.07, "z": 41.14, "alpha": 112.7, "beta": 18.5, "gamma": -7.2}, {"t": 0.7, "x": 22.36, "y": -8.1, "z": 41.03, "alpha": 112.5, "beta": 18.6, "gamma": -7.1}, {"t": 0.75, "x": 22.43, "y": -8.05, "z": 41.09, "alpha": 112.4, "beta": 18.4, "gamma": -7.0}, {"t": 0.8, "x": 22.39, "y": -8.12, "z": 41.11, "alpha": 112.6, "beta": 18.6, "gamma": -7.2}, {"t": 0.85, "x": 22.46, "y": -8.16, "z": 41.06, "alpha": 112.8, "beta": 18.8, "gamma": -7.4}, {"t": 0.9, "x": 22.42, "y": -8.09, "z": 41.13, "alpha": 112.7, "beta": 18.7, "gamma": -7.1}, {"t": 0.95, "x": 22.37, "y": -8.04, "z": 41.05, "alpha": 112.5, "beta": 18.5, "gamma": -7.0}, {"t": 1.0, "x": 22.44, "y": -8.11, "z": 41.1, "alpha": 112.6, "beta": 18.6, "gamma": -7.2}]}, "expected": {"bits": [1, 0]}};</script><script>/* Generated from gestures/gestures.json; do not edit by hand. */
+const GESTURE_DATA = Object.freeze({"version": "1.0", "encoding": "prefix-free", "fuzzy_tolerance": 0, "bit_duration_default": 1.0, "gestures": {"wave": {"bits": [0, 0, 0, 1], "aliases": ["hello", "hi", "greet"], "description": "Hand wave", "category": "greeting", "priority": 1}, "tap": {"bits": [0, 0, 1, 0], "aliases": ["click", "select"], "description": "Single tap", "category": "action", "priority": 1}, "circle": {"bits": [0, 0, 1, 1], "aliases": ["loop", "rotate"], "description": "Circular motion", "category": "action", "priority": 2}, "shake": {"bits": [0, 1, 0, 0], "aliases": ["no", "reject", "cancel"], "description": "Shake", "category": "negative", "priority": 1}, "nod": {"bits": [0, 1, 0, 1], "aliases": ["yes", "confirm", "accept"], "description": "Nod", "category": "positive", "priority": 1}, "swipe_left": {"bits": [0, 1, 1, 0], "aliases": ["previous", "back"], "description": "Swipe left", "category": "navigation", "priority": 2}, "swipe_right": {"bits": [0, 1, 1, 1], "aliases": ["next", "forward"], "description": "Swipe right", "category": "navigation", "priority": 2}, "fist": {"bits": [1, 0, 0, 0], "aliases": ["stop", "halt"], "description": "Closed fist", "category": "control", "priority": 1}, "open_palm": {"bits": [1, 0, 0, 1], "aliases": ["pause", "wait"], "description": "Open palm", "category": "control", "priority": 2}}, "reserved": {"1110": "future_use", "1111": "end_of_message"}, "profiles": {"default": "gestures/gesture_profiles/default.json"}});
+if (typeof globalThis !== 'undefined') globalThis.GESTURE_DATA = GESTURE_DATA;
+if (typeof module !== 'undefined' && module.exports) module.exports = GESTURE_DATA;
+
+(function(root){'use strict';
+function crc16ccitt(bits, poly, init){
+  try {
+    poly = poly === undefined ? (root.APP_PROTOCOL ? root.APP_PROTOCOL.CRC_POLYNOMIAL : 0x1021) : Number(poly);
+    init = init === undefined ? (root.APP_PROTOCOL ? root.APP_PROTOCOL.CRC_INIT : 0xFFFF) : Number(init);
+    if (!Number.isInteger(poly) || poly < 0 || poly > 0xFFFF || !Number.isInteger(init) || init < 0 || init > 0xFFFF) throw new RangeError('Polynomial and initial value must be 16-bit integers');
+    let crc = init;
+    for (const item of bits) { const bit = Number(item); if (bit !== 0 && bit !== 1) throw new TypeError('Bits must contain only 0 and 1'); const feedback = ((crc >>> 15) & 1) ^ bit; crc = (crc << 1) & 0xFFFF; if (feedback) crc ^= poly; }
+    return crc;
+  } catch (error) { throw new Error('CRC-16-CCITT failed: ' + error.message); }
+}
+const api = Object.freeze({crc16ccitt:crc16ccitt}); root.CRC16 = api;
+if (typeof module !== 'undefined' && module.exports) module.exports = api;
+})(typeof globalThis !== 'undefined' ? globalThis : this);
+
+(function (root) {
+    'use strict';
+    const P = root.APP_PROTOCOL || { SYNC_HEADER: [1, 0, 1, 0, 1, 0, 1, 0], END_OF_MESSAGE: [1, 1, 1, 1], CRC_POLYNOMIAL: 0x1021, CRC_INIT: 0xFFFF, SAMPLE_RATE: 20, BIT_DURATION_DEFAULT: 1 };
+    function finiteArray(data, label) { try { const a = Array.from(data, Number); if (a.some(v => !Number.isFinite(v))) throw new TypeError(label + ' must contain finite numbers'); return a; } catch (e) { throw new Error('Invalid ' + label + ': ' + e.message); } }
+    function median(values) { const a = values.slice().sort((x, y) => x - y), m = a.length >> 1; return a.length % 2 ? a[m] : (a[m - 1] + a[m]) / 2; }
+    function computeMagnitude(samples) { try { return Float64Array.from(samples.map(s => Math.sqrt(Number(s.x || 0) ** 2 + Number(s.y || 0) ** 2 + Number(s.z || 0) ** 2))); } catch (e) { throw new Error('Magnitude computation failed: ' + e.message); } }
+    function movingAverage(data, window) { try { const v = finiteArray(data, 'data'), w = Math.floor(window === undefined ? 5 : Number(window)); if (w <= 0) throw new RangeError('window must be positive'); if (!v.length) return []; const width = Math.min(w, v.length), left = Math.floor((width - 1) / 2), right = width - 1 - left, padded = Array(left).fill(v[0]).concat(v, Array(right).fill(v[v.length - 1])), out = []; for (let i = 0; i < v.length; i++) { let sum = 0; for (let j = 0; j < width; j++)sum += padded[i + j]; out.push(sum / width); } return out; } catch (e) { throw new Error('Moving average failed: ' + e.message); } }
+    function lowPass(data, cutoffHz, sampleRate) { try { const v = finiteArray(data, 'data'), rate = Number(sampleRate), cut = Number(cutoffHz); if (rate <= 0 || cut <= 0) throw new RangeError('sample_rate and cutoff_hz must be positive'); if (!v.length) return []; const c = Math.min(cut, rate * .499), dt = 1 / rate, rc = 1 / (2 * Math.PI * c), alpha = dt / (rc + dt), out = [v[0]]; for (let i = 1; i < v.length; i++)out[i] = out[i - 1] + alpha * (v[i] - out[i - 1]); return out; } catch (e) { throw new Error('Low-pass filter failed: ' + e.message); } }
+    function baselineCorrection(data, baselineSegment) { try { const v = finiteArray(data, 'data'), b = finiteArray(baselineSegment, 'baseline'); if (!b.length) throw new RangeError('baseline_segment must not be empty'); return v.map(x => x - median(b)); } catch (e) { throw new Error('Baseline correction failed: ' + e.message); } }
+    function computeFromIdle(data, idleStart, idleEnd, sampleRate) { try { const v = finiteArray(data, 'data'); if (idleStart < 0 || idleEnd < idleStart) throw new RangeError('idle bounds must satisfy 0 <= start <= end'); const seg = v.slice(Math.trunc(idleStart), Math.trunc(idleEnd)); if (!seg.length) throw new RangeError('idle segment is empty or outside data'); const m = median(seg); return m + 3 * 1.4826 * median(seg.map(x => Math.abs(x - m))); } catch (e) { throw new Error('Idle threshold failed: ' + e.message); } }
+    function computeAdaptive(data, window) { try { const v = finiteArray(data, 'data'), n = Math.floor(Number(window)); if (n <= 0) throw new RangeError('window must be positive'); const half = Math.max(1, Math.floor(n / 2)); return v.map((_, i) => { const s = v.slice(Math.max(0, i - half), Math.min(v.length, i + half + 1)), m = median(s); return m + 3 * 1.4826 * median(s.map(x => Math.abs(x - m))); }); } catch (e) { throw new Error('Adaptive threshold failed: ' + e.message); } }
+    function computeOtsu(data) { try { const v = finiteArray(data, 'data'); if (!v.length) throw new RangeError('data must not be empty'); const low = Math.min(...v), high = Math.max(...v); if (low === high) return low; const bins = Math.min(256, Math.max(2, Math.trunc(Math.sqrt(v.length)))), hist = Array(bins).fill(0), width = (high - low) / bins; for (const x of v) hist[Math.min(bins - 1, Math.floor((x - low) / width))]++; let omega = 0, mean = 0, total = 0; const centers = hist.map((_, i) => low + (i + .5) * width); for (let i = 0; i < bins; i++)total += hist[i] / v.length * centers[i]; let best = -1, bestIndex = 0; for (let i = 0; i < bins; i++) { const prob = hist[i] / v.length; omega += prob; mean += prob * centers[i]; const denom = omega * (1 - omega), variance = denom > 0 ? ((total * omega - mean) ** 2) / denom : 0; if (variance > best) { best = variance; bestIndex = i; } } return centers[bestIndex]; } catch (e) { throw new Error('Otsu threshold failed: ' + e.message); } }
+    function computePercentile(data, p) { try { const v = finiteArray(data, 'data').sort((a, b) => a - b), q = Number(p); if (!v.length) throw new RangeError('data must not be empty'); if (q < 0 || q > 100) throw new RangeError('percentile must be between 0 and 100'); const pos = (v.length - 1) * q / 100, lo = Math.floor(pos), hi = Math.ceil(pos); return v[lo] + (v[hi] - v[lo]) * (pos - lo); } catch (e) { throw new Error('Percentile threshold failed: ' + e.message); } }
+    function sampleValue(s) { return s && typeof s === 'object' ? Number(s.x !== undefined ? s.x : (s.z || 0)) : Number(s); }
+    function samplesToBits(data, threshold, bitDuration, sampleRate) { try { if (!(bitDuration > 0)) throw new RangeError('bit_duration must be positive'); if (!data || !data.length) return []; const tAware = typeof data[0] === 'object' && data[0] !== null && data[0].t !== undefined; if (tAware) { const times = data.map(s => Number(s.t)), vals = data.map(sampleValue), origin = times[0], end = times[times.length - 1] - origin, count = Math.max(1, Math.ceil((end + 1e-9) / bitDuration)), out = []; for (let i = 0; i < count; i++) { const start = origin + i * bitDuration, stop = origin + (i + 1) * bitDuration, interval = []; for (let j = 0; j < times.length; j++)if (times[j] >= start && times[j] < stop) interval.push(vals[j]); if (!interval.length) { let nearest = 0; for (let j = 1; j < times.length; j++)if (Math.abs(times[j] - (start + stop) / 2) < Math.abs(times[nearest] - (start + stop) / 2)) nearest = j; interval.push(vals[nearest]); } out.push(interval.reduce((a, b) => a + b, 0) / interval.length > threshold ? 1 : 0); } return out; } const vals = data.map(sampleValue), per = Math.max(1, Math.round(bitDuration * (sampleRate || P.SAMPLE_RATE)),); const out = []; for (let i = 0; i < vals.length; i += per) { const section = vals.slice(i, i + per); if (section.length) out.push(section.reduce((a, b) => a + b, 0) / section.length > threshold ? 1 : 0); } return out; } catch (e) { throw new Error('Sample-to-bit conversion failed: ' + e.message); } }
+    function findSyncHeader(bits, pattern, tolerance) { try { const p = pattern || P.SYNC_HEADER, tol = tolerance === undefined ? (p.length > 1 ? 1 : 0) : tolerance; if (!p.length || bits.length < p.length) return -1; for (let i = 0; i <= bits.length - p.length; i++) { let mismatch = 0; for (let j = 0; j < p.length; j++)if (Number(bits[i + j]) !== Number(p[j])) mismatch++; if (mismatch <= tol) return i; } return -1; } catch (e) { throw new Error('Sync search failed: ' + e.message); } }
+    function bitsToText(bits) { try { const bytes = []; for (let i = 0; i + 7 < bits.length; i += 8) { let value = 0; for (let j = 0; j < 8; j++) { const b = Number(bits[i + j]); if (b !== 0 && b !== 1) throw new TypeError('bits must contain only 0 and 1'); value = (value << 1) | b; } bytes.push(value); } return new TextDecoder('utf-8', { fatal: false }).decode(new Uint8Array(bytes)).replace(/\x00+$/, ''); } catch (e) { throw new Error('UTF-8 bit decoding failed: ' + e.message); } }
+    function bitsToGesture(bits, tolerance) { try { const data = root.GESTURE_DATA; if (!data || !data.gestures) return null; const key = bits.join(''), tol = tolerance === undefined ? Number(data.fuzzy_tolerance || 0) : Number(tolerance); for (const [name, item] of Object.entries(data.gestures)) if (item.bits.join('') === key) return name; if (tol <= 0) return null; let best = null, distance = Infinity; for (const [name, item] of Object.entries(data.gestures)) { const pattern = item.bits.join(''); if (pattern.length !== key.length) continue; let d = 0; for (let i = 0; i < key.length; i++)if (key[i] !== pattern[i]) d++; if (d <= tol && d < distance) { distance = d; best = name; } } return best; } catch (e) { throw new Error('Gesture lookup failed: ' + e.message); } }
+    function decodeFrame(bits) { try { const syncIndex = findSyncHeader(bits), found = syncIndex >= 0, payload = found ? bits.slice(syncIndex + P.SYNC_HEADER.length) : bits.slice(), hasCRC = payload.length >= 16, body = hasCRC ? payload.slice(0, -16) : payload, check = hasCRC ? payload.slice(-16) : [], received = check.reduce((a, b) => (a << 1) | Number(b), 0), valid = hasCRC && root.CRC16.crc16ccitt(body, P.CRC_POLYNOMIAL, P.CRC_INIT) === received, message = valid ? bitsToText(body) : (hasCRC ? '' : bitsToText(payload)), gesture = bitsToGesture(payload), confidence = found ? Math.min(1, Math.max(0, .5 + (1 - Math.abs((bits.reduce((a, b) => a + Number(b), 0) / Math.max(1, bits.length)) - .5)) * .5)) : 0; return { syncFound: found, syncIndex, payloadBits: payload, crc: hasCRC ? received : null, crcValid: valid, message, gesture, confidence }; } catch (e) { throw new Error('Frame decode failed: ' + e.message); } }
+    function decodeRecording(recording) {
+        try {
+            if (!recording || !Array.isArray(recording.samples) || !recording.samples.length) throw new TypeError('recording.samples must be a non-empty array'); const meta = recording.metadata || {}, rate = Number(meta.sample_rate_hz || P.SAMPLE_RATE), duration = Number(meta.bit_duration_seconds || P.BIT_DURATION_DEFAULT); if (rate <= 0 || duration <= 0) throw new RangeError('sample rate and bit duration must be positive'); const samples = recording.samples, axes = {}; for (const axis of ['x', 'y', 'z']) axes[axis] = samples.map(s => Number(s[axis] || 0)); const sensor = String(meta.sensor_type || 'magnetometer'), axis = sensor === 'device_orientation' ? 'x' : Object.keys(axes).reduce((best, name) => { const v = axes[name], m = v.reduce((a, b) => a + b, 0) / v.length, variance = v.reduce((a, b) => a + (b - m) ** 2, 0) / v.length; return variance > (axes[best].reduce((a, b) => a + b, 0) / axes[best].length === NaN ? -1 : axes[best].reduce((a, b) => a + b, 0) / axes[best].length) ? name : best; }, 'x');
+            // Match NumPy variance-axis selection without relying on enumeration ties.
+            let selected = 'x', maxVar = -1; for (const name of ['x', 'y', 'z']) { const a = axes[name], mean = a.reduce((x, y) => x + y, 0) / a.length, v = a.reduce((x, y) => x + (y - mean) ** 2, 0) / a.length; if (v > maxVar) { maxVar = v; selected = name; } } if (sensor === 'device_orientation') selected = 'x';
+            const values = axes[selected], baseCount = Math.max(1, Math.min(values.length, Math.trunc(rate * .5))), baseline = median(values.slice(0, baseCount)), conditioned = lowPass(values.map(v => Math.abs(v - baseline)), Math.min(8, rate * .45), rate), threshold = computeOtsu(conditioned), transformed = samples.map((s, i) => Object.assign({}, s, { x: conditioned[i], y: conditioned[i], z: conditioned[i] })), bits = samplesToBits(transformed, threshold, duration, rate), syncIndex = findSyncHeader(bits), decoded = decodeFrame(bits), activity = conditioned.filter(v => v > threshold).length / conditioned.length; return { message: decoded.message, gesture: bitsToGesture(syncIndex >= 0 ? bits.slice(syncIndex + P.SYNC_HEADER.length) : bits), bits, confidence: syncIndex < 0 ? Math.min(.49, activity) : Math.min(1, Math.max(0, .5 + (1 - Math.abs(activity - .5)) * .5)), crc_valid: decoded.crcValid, crc: decoded.crc, sync_found: syncIndex >= 0, sync_index: syncIndex, threshold, error: null };
+        } catch (e) { return { message: '', gesture: null, bits: [], confidence: 0, crc_valid: false, sync_found: false, sync_index: -1, error: e.message }; }
+    }
+    function computeFromIdle(data, idleStart, idleEnd, sampleRate) { try { const v=finiteArray(data,'data'), segment=v.slice(Math.trunc(idleStart),Math.trunc(idleEnd)); if(idleStart<0||idleEnd<idleStart||!segment.length)throw new RangeError('valid non-empty idle bounds required'); const mean=segment.reduce((a,b)=>a+b,0)/segment.length; return mean+2*Math.sqrt(segment.reduce((a,b)=>a+(b-mean)**2,0)/segment.length); } catch(e){throw new Error('Idle threshold failed: '+e.message);} }
+    function computeAdaptive(data, window) { try { const v=finiteArray(data,'data'), n=Math.floor(window===undefined?50:Number(window)); if(n<=0)throw new RangeError('window must be positive'); const half=Math.max(1,Math.floor(n/2)); return v.map((_,i)=>{const s=v.slice(Math.max(0,i-half),Math.min(v.length,i+half+1)),m=s.reduce((a,b)=>a+b,0)/s.length;return m+1.5*Math.sqrt(s.reduce((a,b)=>a+(b-m)**2,0)/s.length);}); }catch(e){throw new Error('Adaptive threshold failed: '+e.message);} }
+    function computeOtsu(data) { try { const v=finiteArray(data,'data');if(!v.length)throw new RangeError('data must not be empty');const low=Math.min(...v),high=Math.max(...v);if(low===high)return low;const bins=100,width=(high-low)/bins,hist=Array(bins).fill(0);for(const x of v)hist[Math.min(bins-1,Math.floor((x-low)/width))]++;const centers=hist.map((_,i)=>low+(i+.5)*width);let omega=0,mean=0,total=0;for(let i=0;i<bins;i++)total+=hist[i]/v.length*centers[i];let best=-1,index=0;for(let i=0;i<bins;i++){const p=hist[i]/v.length;omega+=p;mean+=p*centers[i];const d=omega*(1-omega),variance=d>0?((total*omega-mean)**2)/d:0;if(variance>best){best=variance;index=i;}}return centers[index];}catch(e){throw new Error('Otsu threshold failed: '+e.message);} }
+    function computePercentile(data,p) { try { const v=finiteArray(data,'data').sort((a,b)=>a-b),q=Number(p===undefined?75:p);if(!v.length||q<0||q>100)throw new RangeError('non-empty data and percentile 0..100 required');const at=(v.length-1)*q/100,lo=Math.floor(at),hi=Math.ceil(at);return v[lo]+(v[hi]-v[lo])*(at-lo);}catch(e){throw new Error('Percentile threshold failed: '+e.message);} }
+    function samplesToBits(data,threshold,bitDuration,sampleRate) { try { if(!(bitDuration>0))throw new RangeError('bit duration must be positive');if(!data||!data.length)return [];const times=data.map((s,i)=>s&&s.t!==undefined?Number(s.t):i/(sampleRate||P.SAMPLE_RATE)),values=data.map(sampleValue),origin=times[0],count=Math.max(1,Math.ceil((times[times.length-1]-origin+1e-9)/bitDuration)),out=[];for(let k=0;k<count;k++){const start=origin+k*bitDuration,stop=start+bitDuration,ids=[];for(let i=0;i<times.length;i++)if(times[i]>=start&&times[i]<stop)ids.push(i);if(!ids.length){let near=0;for(let i=1;i<times.length;i++)if(Math.abs(times[i]-(start+stop)/2)<Math.abs(times[near]-(start+stop)/2))near=i;ids.push(near);}const avg=ids.reduce((a,i)=>a+values[i],0)/ids.length,limit=Array.isArray(threshold)||ArrayBuffer.isView(threshold)?ids.reduce((a,i)=>a+Number(threshold[i]),0)/ids.length:Number(threshold);out.push(avg>limit?1:0);}return out;}catch(e){throw new Error('Sample-to-bit conversion failed: '+e.message);} }
+    function decodeRecordingMode(recording,mode,options) { try { options=options||{};if(!recording||!Array.isArray(recording.samples))throw new TypeError('recording.samples must be an array');if(!recording.samples.length)return {threshold:null,bits:[],sync_index:-1,crc:null,crc_valid:false,message:'',gesture:null,error:null};const meta=recording.metadata||{},rate=Number(meta.sample_rate_hz||P.SAMPLE_RATE),duration=Number(meta.bit_duration_seconds||P.BIT_DURATION_DEFAULT),axes={};for(const axis of ['x','y','z'])axes[axis]=recording.samples.map(s=>Number(s[axis]||0));let axis='x',max=-1;for(const name of ['x','y','z']){const a=axes[name],m=a.reduce((x,y)=>x+y,0)/a.length,v=a.reduce((x,y)=>x+(y-m)**2,0)/a.length;if(v>max){max=v;axis=name;}}if(meta.sensor_type==='device_orientation')axis='x';const raw=axes[axis],n=Math.max(1,Math.min(raw.length,Math.trunc(rate*.5))),base=median(raw.slice(0,n)),conditioned=lowPass(raw.map(v=>Math.abs(v-base)),Math.min(8,rate*.45),rate);let threshold;if(mode==='otsu')threshold=computeOtsu(conditioned);else if(mode==='idle')threshold=computeFromIdle(conditioned,options.idle_start===undefined?(meta.idle_start_index||0):options.idle_start,options.idle_end===undefined?(meta.idle_end_index||Math.max(1,Math.trunc(rate*.5))):options.idle_end,rate);else if(mode==='adaptive')threshold=computeAdaptive(conditioned,options.window||50);else if(mode==='percentile')threshold=computePercentile(conditioned,options.percentile===undefined?75:options.percentile);else if(mode==='manual')threshold=Number(options.manual||0);else throw new RangeError('unknown threshold mode '+mode);const data=recording.samples.map((s,i)=>Object.assign({},s,{x:conditioned[i]})),bits=samplesToBits(data,threshold,duration,rate),sync=findSyncHeader(bits);let crc=null,valid=false,message='',gesture=null;if(sync>=0){const frame=bits.slice(sync+P.SYNC_HEADER.length),end=P.END_OF_MESSAGE;if(frame.length>=16+end.length&&frame.slice(-end.length).join('')===end.join('')){const body=frame.slice(0,-end.length-16),checksum=frame.slice(-end.length-16,-end.length);crc=checksum.reduce((a,b)=>(a<<1)|b,0);valid=root.CRC16.crc16ccitt(body,P.CRC_POLYNOMIAL,P.CRC_INIT)===crc;if(valid)message=bitsToText(body);gesture=bitsToGesture(body);}else gesture=bitsToGesture(frame);}return {threshold:Array.isArray(threshold)?threshold:threshold,bits,sync_index:sync,crc,crc_valid:valid,message,gesture,error:null};}catch(e){return {threshold:null,bits:[],sync_index:-1,crc:null,crc_valid:false,message:'',gesture:null,error:e.message};} }
+    const api = { computeMagnitude, movingAverage, lowPass, baselineCorrection, computeFromIdle, computeAdaptive, computeOtsu, computePercentile, samplesToBits, findSyncHeader, bitsToText, bitsToGesture, decodeFrame, decodeRecording, decodeRecordingMode }; root.Decoder = api; if (typeof module !== 'undefined' && module.exports) module.exports = api;
+})(typeof globalThis !== 'undefined' ? globalThis : this);
+
+(function(root){'use strict';function LineChart(canvas,options){try{if(!canvas||!canvas.getContext)throw new TypeError('Canvas element required');this.canvas=canvas;this.ctx=canvas.getContext('2d');this.windowSeconds=(options&&options.windowSeconds)||30;this.series={x:[],y:[],z:[]};this.lastPaint=0;this.pending=false;this.colors={x:'#55d6be',y:'#f5b942',z:'#ff6b81'};this.resize();if(typeof ResizeObserver!=='undefined'){this.observer=new ResizeObserver(()=>this.resize());this.observer.observe(canvas);}else root.addEventListener('resize',()=>this.resize());}catch(e){throw new Error('Chart initialization failed: '+e.message);}}LineChart.prototype.resize=function(){try{const ratio=root.devicePixelRatio||1,w=Math.max(1,this.canvas.clientWidth),h=Math.max(1,this.canvas.clientHeight);this.canvas.width=Math.round(w*ratio);this.canvas.height=Math.round(h*ratio);this.ctx.setTransform(ratio,0,0,ratio,0,0);this.width=w;this.height=h;this.requestDraw();}catch(e){console.error('Chart resize failed',e);}};LineChart.prototype.add=function(point){try{const t=Number(point.t);for(const axis of ['x','y','z'])this.series[axis].push({t,v:Number(point[axis])||0});const cutoff=t-this.windowSeconds;for(const axis of ['x','y','z']){const a=this.series[axis];let i=0;while(i<a.length&&a[i].t<cutoff)i++;if(i)a.splice(0,i);}this.requestDraw();}catch(e){console.error('Chart update failed',e);}};LineChart.prototype.setData=function(samples){try{this.clear();for(const sample of samples)this.add(sample);}catch(e){console.error('Chart data load failed',e);}};LineChart.prototype.clear=function(){for(const axis of ['x','y','z'])this.series[axis]=[];this.requestDraw();};LineChart.prototype.requestDraw=function(){if(this.pending)return;this.pending=true;requestAnimationFrame(timestamp=>{this.pending=false;if(timestamp-this.lastPaint<1000/30){setTimeout(()=>this.requestDraw(),1000/30-(timestamp-this.lastPaint));return;}this.lastPaint=timestamp;this.draw();});};LineChart.prototype.draw=function(){try{const c=this.ctx,w=this.width,h=this.height,pad={l:42,r:8,t:12,b:24},plotW=w-pad.l-pad.r,plotH=h-pad.t-pad.b;c.clearRect(0,0,w,h);c.fillStyle='#101923';c.fillRect(0,0,w,h);const all=Object.values(this.series).flat(),now=all.length?all[all.length-1].t:0,minT=Math.max(0,now-this.windowSeconds),maxT=Math.max(minT+1,now),vals=all.map(p=>p.v),low=vals.length?Math.min(...vals):0,high=vals.length?Math.max(...vals):1,span=Math.max(1e-9,high-low),margin=span*.08,yMin=low-margin,yMax=high+margin;c.font='11px sans-serif';c.strokeStyle='#30404d';c.fillStyle='#aab8c4';c.lineWidth=1;for(let i=0;i<=4;i++){const y=pad.t+plotH*i/4;c.beginPath();c.moveTo(pad.l,y);c.lineTo(w-pad.r,y);c.stroke();c.fillText((yMax-(yMax-yMin)*i/4).toFixed(1),2,y+4);}for(let i=0;i<=3;i++){const x=pad.l+plotW*i/3;c.beginPath();c.moveTo(x,pad.t);c.lineTo(x,pad.t+plotH);c.stroke();c.fillText((maxT-(maxT-minT)*i/3).toFixed(0)+'s',x-12,h-5);}for(const axis of ['x','y','z']){const arr=this.series[axis];if(arr.length<1)continue;c.strokeStyle=this.colors[axis];c.lineWidth=1.7;c.beginPath();for(let i=0;i<arr.length;i++){const x=pad.l+(arr[i].t-minT)/(maxT-minT)*plotW,y=pad.t+(yMax-arr[i].v)/(yMax-yMin)*plotH;if(i===0)c.moveTo(x,y);else c.lineTo(x,y);}c.stroke();}}catch(e){console.error('Chart drawing failed',e);}};root.ChartLite=Object.freeze({LineChart});if(typeof module!=='undefined'&&module.exports)module.exports=root.ChartLite;})(typeof globalThis!=='undefined'?globalThis:this);
+
+(function(root){'use strict';function SensorHub(onSample,onStatus){this.onSample=onSample;this.onStatus=onStatus||function(){};this.sensor=null;this.timer=null;this.startedAt=0;this.type='none';this.samples=[];}SensorHub.prototype.status=function(message,kind){try{this.onStatus(message,kind||'info');}catch(e){console.error('Sensor status handler failed',e);}};SensorHub.prototype.start=async function(){try{if(!root.isSecureContext){this.status('غير آمن / Not a secure context. افتح عبر http://127.0.0.1:8080 أو HTTPS / Use the phone localhost server or HTTPS.','error');return false;}if('Magnetometer'in root){try{if(root.Magnetometer.requestPermission){const permission=await root.Magnetometer.requestPermission();if(permission!=='granted')throw new Error('Magnetometer permission denied');}this.sensor=new root.Magnetometer({frequency:20});this.sensor.addEventListener('reading',()=>this.emit({x:this.sensor.x||0,y:this.sensor.y||0,z:this.sensor.z||0}),{passive:true});this.sensor.addEventListener('error',event=>this.status('Sensor error: '+(event.error&&event.error.message||'permission or hardware unavailable'),'error'));this.sensor.start();this.type='magnetometer';this.status('Magnetometer active','success');return true;}catch(e){this.sensor=null;this.status('Magnetometer unavailable; trying device motion: '+e.message,'warning');}}if(root.DeviceMotionEvent){if(typeof root.DeviceMotionEvent.requestPermission==='function'){const permission=await root.DeviceMotionEvent.requestPermission();if(permission!=='granted')throw new Error('Motion permission denied');}this.startedAt=Date.now();this.motionHandler=event=>{const a=event.accelerationIncludingGravity||event.acceleration;if(a)this.emit({x:a.x||0,y:a.y||0,z:a.z||0});};root.addEventListener('devicemotion',this.motionHandler,{passive:true});this.type='devicemotion';this.status('Using device motion / acceleration fallback; this is not a magnetometer','warning');return true;}this.status('No supported sensor API. Import an exported JSON recording to decode offline.','error');return false;}catch(e){this.status('Sensor start failed: '+e.message+'. Check browser permission or import JSON.','error');return false;}};SensorHub.prototype.emit=function(value){try{const elapsed=(Date.now()-this.startedAt)/1000;if(!this.startedAt)this.startedAt=Date.now();const point={t:elapsed,x:Number(value.x)||0,y:Number(value.y)||0,z:Number(value.z)||0};this.samples.push(point);this.onSample(point);}catch(e){this.status('Could not read sensor sample: '+e.message,'error');}};SensorHub.prototype.stop=function(){try{if(this.sensor){this.sensor.stop();this.sensor=null;}if(this.motionHandler){root.removeEventListener('devicemotion',this.motionHandler);this.motionHandler=null;}this.status('Recording stopped','info');}catch(e){this.status('Could not stop sensor cleanly: '+e.message,'error');}};SensorHub.prototype.reset=function(){this.stop();this.samples=[];this.startedAt=0;};root.SensorHub=SensorHub;if(typeof module!=='undefined'&&module.exports)module.exports=SensorHub;})(typeof globalThis!=='undefined'?globalThis:this);
+
+(function(root){'use strict';function RecordingStore(){this.db=null;this.key='offlineReceiverRecordingsV1';this.limit=3*1024*1024;}RecordingStore.prototype.open=function(){return new Promise((resolve,reject)=>{try{if(!root.indexedDB)throw new Error('IndexedDB unavailable');const request=root.indexedDB.open('OfflineReceiverDB',1);request.onupgradeneeded=()=>{const db=request.result;if(!db.objectStoreNames.contains('recordings'))db.createObjectStore('recordings',{keyPath:'id'});};request.onsuccess=()=>{this.db=request.result;resolve();};request.onerror=()=>reject(request.error||new Error('IndexedDB open failed'));}catch(error){reject(error);}});};RecordingStore.prototype.local=function(){try{return JSON.parse(root.localStorage.getItem(this.key)||'[]');}catch(error){throw new Error('Local recordings unavailable: '+error.message);}};RecordingStore.prototype.writeLocal=function(items){try{const value=JSON.stringify(items);if(new Blob([value]).size>this.limit)throw new Error('3 MB fallback limit reached; export delete recordings');root.localStorage.setItem(this.key,value);}catch(error){throw new Error('Storage quota exceeded: '+error.message);}};RecordingStore.prototype.all=async function(){try{await this.open();return await new Promise((resolve,reject)=>{const request=this.db.transaction('recordings','readonly').objectStore('recordings').getAll();request.onsuccess=()=>resolve(request.result.sort((a,b)=>b.timestamp-a.timestamp));request.onerror=()=>reject(request.error);});}catch(error){return this.local();}};RecordingStore.prototype.save=async function(item){item.id=item.id||('recording-'+Date.now()+'-'+Math.random().toString(16).slice(2));item.timestamp=item.timestamp||Date.now();try{await this.open();await new Promise((resolve,reject)=>{const transaction=this.db.transaction('recordings','readwrite');transaction.objectStore('recordings').put(item);transaction.oncomplete=resolve;transaction.onerror=()=>reject(transaction.error);transaction.onabort=()=>reject(transaction.error||new Error('IndexedDB quota exceeded'));});return item;}catch(error){const items=this.local(),index=items.findIndex(entry=>entry.id===item.id);if(index<0)items.unshift(item);else items[index]=item;this.writeLocal(items);return item;}};RecordingStore.prototype.remove=async function(id){try{await this.open();await new Promise((resolve,reject)=>{const request=this.db.transaction('recordings','readwrite').objectStore('recordings').delete(id);request.onsuccess=resolve;request.onerror=()=>reject(request.error);});}catch(error){this.writeLocal(this.local().filter(item=>item.id!==id));}};RecordingStore.prototype.rename=async function(id,name){const item=(await this.all()).find(entry=>entry.id===id);if(!item)throw new Error('Recording not found');item.name=name;return this.save(item);};RecordingStore.prototype.export=function(item){try{const blob=new Blob([JSON.stringify(item.recording||item,null,2)],{type:'application/json'}),url=URL.createObjectURL(blob),anchor=document.createElement('a');anchor.href=url;anchor.download=(item.name||'recording').replace(/[^\w-]+/g,'_')+'.json';anchor.click();setTimeout(()=>URL.revokeObjectURL(url),1000);}catch(error){throw new Error('Export failed: '+error.message);}};RecordingStore.prototype.importFile=function(file){return new Promise((resolve,reject)=>{try{const reader=new FileReader();reader.onload=()=>{try{const recording=JSON.parse(reader.result);if(!Array.isArray(recording.samples))throw new Error('Missing samples array');resolve(recording);}catch(error){reject(new Error('Invalid JSON recording: '+error.message));}};reader.onerror=()=>reject(new Error('Could not read file'));reader.readAsText(file,'utf-8');}catch(error){reject(new Error('Import failed: '+error.message));}});};root.RecordingStore=RecordingStore;if(typeof module!=='undefined'&&module.exports)module.exports=RecordingStore;})(typeof globalThis!=='undefined'?globalThis:this);
+
+(function(root){'use strict';const attempts=[];root.__networkAttempts=attempts;function block(kind){return function(){const attempt={kind,time:new Date().toISOString(),target:String(arguments[0]||'')};attempts.push(attempt);try{const banner=document.getElementById('networkWarning')||document.createElement('div');banner.id='networkWarning';banner.textContent='حُظر اتصال شبكي / Network attempt blocked: '+kind;banner.style.cssText='position:sticky;top:0;z-index:99999;background:#a20;color:#fff;padding:12px;font-weight:bold';if(!banner.isConnected&&document.body)document.body.prepend(banner);}catch(error){console.error('Unable to show network guard banner',error);}if(kind==='fetch')return Promise.reject(new TypeError('Offline policy blocked fetch'));if(kind==='XMLHttpRequest'){throw new Error('Offline policy blocked XMLHttpRequest');}if(kind==='sendBeacon')return false;throw new Error('Offline policy blocked '+kind);};}try{root.fetch=block('fetch');root.XMLHttpRequest=function(){return block('XMLHttpRequest')();};root.WebSocket=function(){return block('WebSocket')();};root.EventSource=function(){return block('EventSource')();};if(root.navigator&&typeof root.navigator.sendBeacon==='function'){try{Object.defineProperty(root.navigator,'sendBeacon',{configurable:false,value:block('sendBeacon')});}catch(error){root.navigator.sendBeacon=block('sendBeacon');}}}catch(error){attempts.push({kind:'guard-install',error:String(error)});}root.networkSelfTest=()=>({pass:attempts.length===0,count:attempts.length,attempts:attempts.slice()});})(globalThis);
+
+(function(root){'use strict';function boot(){const $=id=>document.getElementById(id);let samples=[],idle=null,sensor=null;const store=new root.RecordingStore(),chart=new root.ChartLite.LineChart($('chart'));function msg(text,kind){$('notice').textContent=text;$('notice').className='small '+(kind||'info');}function update(){ $('count').textContent=String(samples.length);$('duration').textContent=samples.length?Math.max(0,samples[samples.length-1].t-samples[0].t).toFixed(2)+' s':'0 s';$('sensorType').textContent=sensor?sensor.type:'imported / none';}function current(){return{metadata:{sample_rate_hz:root.APP_PROTOCOL.SAMPLE_RATE,bit_duration_seconds:Number($('bitDuration').value),sensor_type:sensor?sensor.type:'imported'},samples:samples.map(s=>({t:s.t,x:s.x,y:s.y,z:s.z}))};}function show(r){$('syncResult').textContent=r.sync_index>=0?'Found @ '+r.sync_index:'Not found';$('crcResult').textContent=r.crc_valid?'Valid':'Invalid / unavailable';$('confidence').textContent=(r.confidence||0).toFixed(3);$('gesture').textContent=r.gesture||'—';$('decodedMessage').textContent=r.message||'—';$('bits').textContent=(r.bits||[]).join('')||'—';$('modeResult').textContent='Mode: '+r.mode+' | threshold: '+(Array.isArray(r.threshold)?'adaptive '+Math.min(...r.threshold).toFixed(4)+'…'+Math.max(...r.threshold).toFixed(4):String(r.threshold));}function condition(rec,rate){const axes=['x','y','z'].map(a=>rec.samples.map(s=>Number(s[a]||0)));let values=axes[0],max=-1;for(const a of axes){const m=a.reduce((x,y)=>x+y,0)/a.length,v=a.reduce((x,y)=>x+(y-m)**2,0)/a.length;if(v>max){max=v;values=a;}}const baseline=Decoder.computePercentile(values.slice(0,Math.max(1,Math.min(values.length,Math.floor(rate*.5)))),50);return Decoder.lowPass(values.map(v=>Math.abs(v-baseline)),Math.min(8,rate*.45),rate);}function decode(rec){try{rec=rec||current();if(!rec.samples.length)throw Error('No samples in recording');const meta=rec.metadata||{},rate=Number(meta.sample_rate_hz||20),values=condition(rec,rate),mode=$('thresholdMode').value;let threshold;if(mode==='otsu')threshold=Decoder.computeOtsu(values);else if(mode==='idle'){if(!idle)throw Error('Run idle calibration first / نفّذ معايرة الخمول أولاً');threshold=Decoder.computeFromIdle(values,idle.start,Math.min(idle.end,values.length),rate);}else if(mode==='adaptive')threshold=Decoder.computeAdaptive(values,50);else if(mode==='percentile')threshold=Decoder.computePercentile(values,Number($('percentile').value));else threshold=Number($('manualThreshold').value);const data=rec.samples.map((s,i)=>({t:Number(s.t===undefined?i/rate:s.t),x:values[i]})),bits=Decoder.samplesToBits(data,threshold,Number($('bitDuration').value),rate),sync=Decoder.findSyncHeader(bits);let crc=null,valid=false,message='',gesture=null;if(sync>=0){let frame=bits.slice(sync+root.APP_PROTOCOL.SYNC_HEADER.length);if(frame.slice(-4).join('')===root.APP_PROTOCOL.END_OF_MESSAGE.join(''))frame=frame.slice(0,-4);if(frame.length>=16){const payload=frame.slice(0,-16),checksum=frame.slice(-16);crc=checksum.reduce((a,b)=>(a<<1)|b,0);valid=root.CRC16.crc16ccitt(payload,root.APP_PROTOCOL.CRC_POLYNOMIAL,root.APP_PROTOCOL.CRC_INIT)===crc;if(valid)message=Decoder.bitsToText(payload);gesture=Decoder.bitsToGesture(payload);}else gesture=Decoder.bitsToGesture(frame);}const result={mode,threshold,bits,sync_index:sync,crc,crc_valid:valid,message,gesture,confidence:sync>=0?1:0};show(result);msg('Decoded on device','success');return result;}catch(e){msg('Decode blocked: '+e.message,'error');return null;}}async function list(){try{const items=await store.all(),box=$('recordings');box.replaceChildren();if(!items.length){box.textContent='No recordings saved';return;}items.forEach(item=>{const row=document.createElement('div'),info=document.createElement('div'),actions=document.createElement('div');row.className='record';info.textContent=(item.name||'Recording')+' · '+new Date(item.timestamp).toLocaleString();actions.className='row record-actions';const button=(label,fn)=>{const b=document.createElement('button');b.textContent=label;b.onclick=()=>Promise.resolve(fn()).catch(e=>msg(e.message,'error'));actions.appendChild(b);};button('Decode',()=>{samples=item.recording.samples;chart.setData(samples);update();decode(item.recording);});button('Rename',async()=>{const name=prompt('Name',item.name||'Recording');if(name){await store.rename(item.id,name);await list();}});button('Export JSON',()=>store.export(item));button('Delete',async()=>{if(confirm('Delete?')){await store.remove(item.id);await list();}});row.append(info,actions);box.appendChild(row);});}catch(e){msg('Storage error: '+e.message,'error');}}async function diagnostics(){const lines=[],add=(s,n,d)=>lines.push(s+' | '+n+' | '+d),secure=Boolean(root.isSecureContext);add(secure?'PASS':'FAIL','Secure context',secure?'secure origin':'Use phone localhost http://127.0.0.1:8080 or APK; file:// blocks sensors');add('INFO','Origin',location.protocol+' '+location.origin);add('Magnetometer'in root?'PASS':'WARN','Magnetometer API','API presence only; live data still required');add(('DeviceMotionEvent'in root||'DeviceOrientationEvent'in root)?'WARN':'FAIL','Fallback','Orientation/motion is not magnetometer data');try{const p=await navigator.permissions.query({name:'magnetometer'});add('INFO','Magnetometer permission',p.state);}catch(e){add('WARN','Permission query','Unsupported: '+e.message);}add('WARN','3-second live probe','Press Start for actual sensor readings; sensor permission requires user gesture');try{const db=await new Promise((res,rej)=>{const r=indexedDB.open('receiver-diag',1);r.onupgradeneeded=()=>r.result.createObjectStore('probe');r.onsuccess=()=>res(r.result);r.onerror=()=>rej(r.error);});await new Promise((res,rej)=>{const tx=db.transaction('probe','readwrite');tx.objectStore('probe').put('ok','x');tx.oncomplete=res;tx.onerror=()=>rej(tx.error);});const value=await new Promise((res,rej)=>{const r=db.transaction('probe').objectStore('probe').get('x');r.onsuccess=()=>res(r.result);r.onerror=()=>rej(r.error);});await new Promise((res,rej)=>{const tx=db.transaction('probe','readwrite');tx.objectStore('probe').delete('x');tx.oncomplete=res;tx.onerror=()=>rej(tx.error);});db.close();add(value==='ok'?'PASS':'FAIL','IndexedDB round trip','write/read/delete');}catch(e){add('FAIL','IndexedDB',e.message);}try{add(new Blob(['ok']).size===2?'PASS':'FAIL','Blob export','Blob available');}catch(e){add('FAIL','Blob export',e.message);}add(root.networkSelfTest().count===0?'PASS':'FAIL','Network attempts',JSON.stringify(root.networkSelfTest().attempts));add('INFO','Device info',JSON.stringify({ua:navigator.userAgent,screen:screen.width+'x'+screen.height,dpr:devicePixelRatio,cores:navigator.hardwareConcurrency||null}));add('INFO','Decoder fixtures','Run self-test; full matrix in Python/Node tests');$('diagnosticsReport').textContent=lines.join('\n');}function bind(){const secure=Boolean(root.isSecureContext);$('secure').textContent=secure?'🔒 سياق آمن / Secure context':'🔴 سياق غير آمن / Not secure';$('secure').className='secure '+(secure?'ok':'no');msg(secure?'Permission and supported hardware are still required':'Use phone localhost or import JSON',secure?'success':'error');$('start').onclick=async()=>{samples=[];chart.clear();sensor=new root.SensorHub(s=>{samples.push(s);chart.add(s);update();},msg);if(await sensor.start()){$('start').disabled=true;$('stop').disabled=false;}};$('stop').onclick=async()=>{if(sensor)sensor.stop();$('start').disabled=false;$('stop').disabled=true;update();if(samples.length){await store.save({name:'Recording '+Date.now(),recording:current(),sampleCount:samples.length});await list();}};$('analyze').onclick=()=>decode();$('clearChart').onclick=()=>{samples=[];chart.clear();update();};$('export').onclick=()=>samples.length?store.export({name:'recording',recording:current()}):msg('No samples to export','warning');$('chooseImport').onclick=()=>$('importFile').click();$('importFile').onchange=async e=>{try{const rec=await store.importFile(e.target.files[0]);samples=rec.samples;chart.setData(samples);update();decode(rec);await store.save({name:e.target.files[0].name,recording:rec,sampleCount:samples.length});await list();}catch(error){msg(error.message,'error');}finally{e.target.value='';}};$('thresholdMode').onchange=()=>document.querySelectorAll('[data-mode]').forEach(e=>e.classList.toggle('hidden',e.dataset.mode!==$('thresholdMode').value));$('calibrate').onclick=async()=>{if(!root.isSecureContext){msg('Use localhost or APK for sensor calibration','error');return;}const data=[],probe=new root.SensorHub(s=>data.push(s),msg);if(!await probe.start())return;msg('Keep phone still for 3 seconds','info');setTimeout(()=>{probe.stop();samples=data;idle={start:0,end:data.length};chart.setData(data);update();msg('Idle baseline captured: '+data.length,'success');},3000);};$('runDiagnostics').onclick=diagnostics;$('copyDiagnostics').onclick=()=>navigator.clipboard.writeText($('diagnosticsReport').textContent).catch(()=>msg('Select and copy report manually','warning'));$('copyBits').onclick=()=>navigator.clipboard.writeText($('bits').textContent).catch(()=>msg('Select and copy bits manually','warning'));$('selfTest').onclick=()=>{const f=root.PARITY_FIXTURE,r=root.Decoder.decodeRecordingMode(f.recording,'otsu');$('testResult').textContent=JSON.stringify(r.bits)===JSON.stringify(f.expected.bits)?'PASS':'FAIL';};const controls=document.createElement('div');controls.innerHTML='<label data-mode="percentile">Percentile 50–95 <input id="percentile" type="range" min="50" max="95" value="75"><span id="percentileValue">75</span></label><label data-mode="manual">Manual absolute threshold <input id="manualThreshold" type="range" min="0" max="100" step="0.01" value="50"><span id="manualValue">50</span></label>';document.querySelector('#thresholdMode').parentElement.parentElement.appendChild(controls);$('percentile').oninput=e=>$('percentileValue').textContent=e.target.value;$('manualThreshold').oninput=e=>$('manualValue').textContent=e.target.value;update();list();}try{if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',bind,{once:true});else bind();}catch(e){const n=document.getElementById('notice');if(n)n.textContent='Initialization failed: '+e.message;}}boot();})(globalThis);
+</script>
+</body>
+
+</html>

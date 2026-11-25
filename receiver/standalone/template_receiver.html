@@ -1,0 +1,292 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+    <meta name="theme-color" content="#101923">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; img-src data: blob:; connect-src 'none'; font-src 'none'; media-src blob:; object-src 'none'; base-uri 'none'; form-action 'none'">
+    <title>Offline Receiver — مستقبل مستقل</title>
+    <style>
+        :root {
+            color-scheme: dark;
+            --bg: #101923;
+            --panel: #192632;
+            --line: #30404d;
+            --text: #edf4f8;
+            --muted: #aab8c4;
+            --accent: #55d6be;
+            --warn: #f5b942;
+            --bad: #ff6b81
+        }
+
+        * {
+            box-sizing: border-box
+        }
+
+        body {
+            margin: 0;
+            background: var(--bg);
+            color: var(--text);
+            font: 16px system-ui, -apple-system, "Segoe UI", sans-serif;
+            padding: env(safe-area-inset-top) 14px env(safe-area-inset-bottom);
+            max-width: 900px;
+            margin-inline: auto
+        }
+
+        header {
+            position: sticky;
+            top: 0;
+            z-index: 3;
+            background: #101923ee;
+            padding: 10px 0
+        }
+
+        .banner {
+            border: 1px solid var(--line);
+            border-radius: 12px;
+            padding: 12px;
+            background: #14222d;
+            line-height: 1.6
+        }
+
+        .secure {
+            font-weight: 700
+        }
+
+        .secure.ok {
+            color: var(--accent)
+        }
+
+        .secure.no {
+            color: var(--bad)
+        }
+
+        h1 {
+            font-size: 1.25rem;
+            margin: 10px 0
+        }
+
+        h2 {
+            font-size: 1.08rem;
+            margin: 0 0 10px
+        }
+
+        section {
+            background: var(--panel);
+            border: 1px solid var(--line);
+            border-radius: 14px;
+            padding: 14px;
+            margin: 12px 0
+        }
+
+        .row {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            align-items: center
+        }
+
+        button,
+        select,
+        input {
+            font: inherit
+        }
+
+        button {
+            min-height: 48px;
+            padding: 8px 14px;
+            border-radius: 10px;
+            border: 1px solid #47606f;
+            background: #233746;
+            color: var(--text);
+            cursor: pointer
+        }
+
+        button:disabled {
+            opacity: .5
+        }
+
+        button.primary {
+            background: #146d60;
+            border-color: #55d6be
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 8px
+        }
+
+        .stat {
+            background: #101923;
+            padding: 10px;
+            border-radius: 9px;
+            color: var(--muted)
+        }
+
+        .stat b {
+            display: block;
+            color: var(--text);
+            margin-top: 3px
+        }
+
+        canvas {
+            width: 100%;
+            height: 260px;
+            display: block;
+            border-radius: 8px
+        }
+
+        .message {
+            padding: 10px;
+            border-radius: 8px;
+            margin: 8px 0;
+            background: #15232e
+        }
+
+        .message.error {
+            border-inline-start: 4px solid var(--bad)
+        }
+
+        .message.warning {
+            border-inline-start: 4px solid var(--warn)
+        }
+
+        .message.success {
+            border-inline-start: 4px solid var(--accent)
+        }
+
+        .bits {
+            font: 14px ui-monospace, Consolas, monospace;
+            overflow-wrap: anywhere;
+            direction: ltr;
+            text-align: left;
+            user-select: text
+        }
+
+        .record {
+            border-top: 1px solid var(--line);
+            padding: 10px 0
+        }
+
+        .record-actions button {
+            min-height: 44px;
+            padding: 6px 10px
+        }
+
+        .small {
+            font-size: .9rem;
+            color: var(--muted)
+        }
+
+        label {
+            display: inline-flex;
+            gap: 7px;
+            align-items: center;
+            min-height: 48px
+        }
+
+        select,
+        input[type=range] {
+            min-height: 48px;
+            background: #101923;
+            color: var(--text);
+            border: 1px solid var(--line);
+            border-radius: 9px;
+            padding: 8px
+        }
+
+        .inline {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap
+        }
+
+        .hidden {
+            display: none !important
+        }
+
+        @media(min-width:620px) {
+            .stats {
+                grid-template-columns: repeat(4, minmax(0, 1fr))
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <div class="banner"><strong>🔌 وضع مستقل — بدون شبكة | Offline standalone — no network</strong><br><span
+                id="secure" class="secure">Checking secure context…</span>
+            <div id="notice" class="small" role="status" aria-live="polite"></div>
+        </div>
+        <h1>مستقبل الإشارات — Offline Receiver</h1>
+    </header>
+    <main>
+        <section>
+            <h2>التسجيل / Recording</h2>
+            <div class="row"><button id="start" class="primary">بدء التسجيل / Start</button><button id="stop"
+                    disabled>إيقاف / Stop</button><button id="export">تصدير JSON / Export</button><label><button
+                        id="chooseImport">استيراد JSON / Import</button><input id="importFile" class="hidden"
+                        type="file" accept=".json,application/json"></label><button id="analyze">تحليل /
+                    Decode</button><button id="clearChart">مسح الرسم / Clear chart</button></div>
+            <div class="stats">
+                <div class="stat">Sample rate<b id="rate">20 Hz</b></div>
+                <div class="stat">Duration<b id="duration">0.0 s</b></div>
+                <div class="stat">Samples<b id="count">0</b></div>
+                <div class="stat">Sensor<b id="sensorType">none</b></div>
+            </div>
+        </section>
+        <section>
+            <h2>الرسم الحي / Live chart (X, Y, Z)</h2><canvas id="chart" aria-label="Live sensor chart"></canvas>
+        </section>
+        <section>
+            <h2>إعدادات التحليل / Decode settings</h2>
+            <div class="inline"><label>Bit duration<select id="bitDuration">
+                        <option value="0.25">0.25 s</option>
+                        <option value="0.5">0.5 s</option>
+                        <option value="1" selected>1.0 s</option>
+                        <option value="2">2.0 s</option>
+                    </select></label><label>Threshold<select id="thresholdMode">
+                        <option value="otsu">Otsu</option>
+                        <option value="idle">Idle</option>
+                        <option value="adaptive">Adaptive</option>
+                        <option value="percentile">Percentile</option>
+                        <option value="manual">Manual</option>
+                    </select></label><label id="manualWrap" class="hidden">Manual threshold<input id="manualThreshold"
+                        type="range" min="0" max="100" value="50"><span id="manualValue">50%</span></label><button
+                    id="calibrate">معايرة الخمول / Calibrate idle (3s)</button></div>
+        </section>
+        <section>
+            <h2>نتيجة التحليل / Decode result</h2>
+            <div class="stats">
+                <div class="stat">Sync<b id="syncResult">—</b></div>
+                <div class="stat">CRC valid<b id="crcResult">—</b></div>
+                <div class="stat">Confidence<b id="confidence">—</b></div>
+                <div class="stat">Gesture<b id="gesture">—</b></div>
+            </div>
+            <p>Message</p>
+            <div id="decodedMessage" class="message">لا توجد نتيجة / No result</div>
+            <p>Raw bits</p>
+            <div class="row"><code id="bits" class="bits">—</code><button id="copyBits">نسخ / Copy</button></div>
+        </section>
+        <section>
+            <h2>نتيجة العتبة / Threshold diagnostics</h2><div id="modeResult" class="small">Mode: —</div>
+        </section>
+        <section>
+            <h2>التسجيلات المحفوظة / Saved recordings</h2>
+            <div id="recordings" class="small">Loading…</div>
+        </section>
+        <section>
+            <h2>الاختبار الداخلي / Parity self-test</h2>
+            <p class="small">Compare embedded fixture against the on-device decoder.</p><button id="selfTest">Run parity
+                self-test</button>
+            <div id="testResult" role="status"></div>
+        </section>
+    </main>
+        <section><h2>🩺 تشخيص الجهاز / Device diagnostics</h2><button id="runDiagnostics">تشغيل التشخيص / Run diagnostics</button><button id="copyDiagnostics">نسخ التقرير / Copy report</button><pre id="diagnosticsReport" class="message" style="white-space:pre-wrap;direction:ltr;text-align:left"></pre></section>
+    <!-- BUILD_CONSTANTS_START --><script>const APP_PROTOCOL={};const PARITY_FIXTURE=null;</script><!-- BUILD_CONSTANTS_END --><!-- BUILD_MODULES_START --><!-- BUILD_MODULES_END -->
+</body>
+
+</html>

@@ -1,0 +1,13 @@
+{
+  "metadata": {
+    "name": "empty_recording",
+    "timestamp": "2026-01-01T00:00:00Z",
+    "sample_rate_hz": 20.0,
+    "bit_duration_seconds": 1.0,
+    "sensor_type": "magnetometer",
+    "idle_start_index": 0,
+    "idle_end_index": 20,
+    "threshold_percentile": 75
+  },
+  "samples": []
+}

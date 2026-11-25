@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#11151b">
+  <meta name="description" content="Record and export magnetometer signal samples for analysis.">
+  <title>Magnetometer Receiver</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="vendor/chart.umd.min.js" defer></script>
+  <script src="script.js" defer></script>
+</head>
+<body>
+  <main class="app-shell">
+    <header class="topbar">
+      <div><p class="eyebrow">SIGNAL CAPTURE</p><h1>Magnetometer Receiver</h1></div>
+      <div id="status" class="status status-idle" role="status" aria-live="polite"><span class="status-dot"></span><span id="statusText">Idle</span></div>
+    </header>
+    <section class="panel controls" aria-label="Recording controls">
+      <div class="button-row">
+        <button id="startButton" class="button button-primary" type="button">Start Recording</button>
+        <button id="stopButton" class="button button-danger" type="button" disabled>Stop Recording</button>
+        <button id="exportButton" class="button" type="button" disabled>Export JSON</button>
+        <button id="clearButton" class="button button-quiet" type="button">Clear Chart</button>
+      </div>
+      <div class="metrics">
+        <div class="metric"><span class="metric-label">Sample rate</span><strong id="sampleRate">— Hz</strong></div>
+        <div class="metric"><span class="metric-label">Recording duration</span><strong id="duration">00:00.0</strong></div>
+        <div class="metric"><span class="metric-label">Samples</span><strong id="sampleCount">0</strong></div>
+      </div>
+    </section>
+    <section class="panel chart-panel" aria-label="Sensor chart">
+      <div class="panel-heading"><div><h2>Live sensor signal</h2><p>Most recent 30 seconds · 20 samples/second</p></div><span class="legend-note">X <i class="legend-x"></i> Y <i class="legend-y"></i> Z <i class="legend-z"></i></span></div>
+      <div class="chart-wrap"><canvas id="sensorChart" aria-label="Sensor values over time" role="img"></canvas></div>
+    </section>
+    <div id="errorMessage" class="error-message" role="alert" hidden></div>
+    <footer>Sensor access requires a secure context (HTTPS or localhost) and your permission.</footer>
+  </main>
+</body>
+</html>
