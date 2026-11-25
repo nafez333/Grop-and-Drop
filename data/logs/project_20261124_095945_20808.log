@@ -1,0 +1,17 @@
+[2026-11-24T09:59:45] [INFO] [shared.logger] Logging initialized -> C:\Users\CMC\Desktop\Grop and Drop\data\logs\project_20261124_095945_20808.log
+[2026-11-24T09:59:45] [INFO] [ack.ack_server] Starting ACK server on 0.0.0.0:8888
+[2026-11-24T09:59:58] [INFO] [werkzeug] WARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:8888
+ * Running on http://10.0.1.243:8888
+[2026-11-24T09:59:58] [INFO] [werkzeug] Press CTRL+C to quit
+[2026-11-24T10:16:42] [INFO] [werkzeug] 192.168.137.96 - - [24/Nov/2026 10:16:42] "GET / HTTP/1.1" 404 -
+[2026-11-24T10:18:07] [INFO] [werkzeug] 10.0.1.243 - - [24/Nov/2026 10:18:07] "GET / HTTP/1.1" 404 -
+[2026-11-24T10:21:16] [INFO] [werkzeug] 127.0.0.1 - - [24/Nov/2026 10:21:16] "GET /status HTTP/1.1" 200 -
+[2026-11-24T10:21:16] [INFO] [werkzeug] 127.0.0.1 - - [24/Nov/2026 10:21:16] "GET /favicon.ico HTTP/1.1" 404 -
+[2026-11-24T10:21:20] [INFO] [werkzeug] 127.0.0.1 - - [24/Nov/2026 10:21:20] "GET /status HTTP/1.1" 200 -
+[2026-11-24T10:21:29] [INFO] [werkzeug] 127.0.0.1 - - [24/Nov/2026 10:21:29] "GET /status HTTP/1.1" 200 -
+[2026-11-24T10:21:58] [INFO] [werkzeug] 127.0.0.1 - - [24/Nov/2026 10:21:58] "GET /status HTTP/1.1" 200 -
+[2026-11-24T10:23:58] [INFO] [werkzeug] 127.0.0.1 - - [24/Nov/2026 10:23:58] "GET /status HTTP/1.1" 200 -
+[2026-11-24T10:24:57] [INFO] [werkzeug] 127.0.0.1 - - [24/Nov/2026 10:24:57] "GET / HTTP/1.1" 404 -
+[2026-11-24T10:25:05] [INFO] [werkzeug] 10.0.1.243 - - [24/Nov/2026 10:25:05] "GET / HTTP/1.1" 404 -

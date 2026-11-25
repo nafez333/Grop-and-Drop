@@ -1,0 +1,73 @@
+[2026-11-24T06:47:05] [INFO] [shared.logger] Logging initialized -> C:\Users\CMC\Desktop\Grop and Drop\data\logs\project_20261124_064705_19064.log
+[2026-11-24T06:47:05] [INFO] [sender.cpu_load] CPU state idle for 0.010 seconds
+[2026-11-24T06:47:05] [INFO] [sender.cpu_load] CPU load controller cleaned up
+[2026-11-24T06:47:05] [INFO] [sender.cpu_load] CPU load active: target=1%, workers=1
+[2026-11-24T06:47:05] [INFO] [sender.cpu_load] CPU load stopped
+[2026-11-24T06:47:05] [INFO] [sender.cpu_load] CPU load active: target=1%, workers=1
+[2026-11-24T06:47:06] [INFO] [sender.cpu_load] CPU load stopped
+[2026-11-24T06:47:06] [INFO] [sender.cpu_load] CPU load controller cleaned up
+[2026-11-24T06:47:06] [INFO] [sender.transmitter] Transmitted bit=1 state=load duration=0.010s
+[2026-11-24T06:47:06] [ERROR] [sender.transmitter] Bit transmission failed
+Traceback (most recent call last):
+  File "C:\Users\CMC\Desktop\Grop and Drop\sender\transmitter.py", line 47, in send_bit
+    self._state(int(bit), float(duration))
+    ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\CMC\Desktop\Grop and Drop\sender\transmitter.py", line 27, in _state
+    self.cpu_controller.start_load(duration)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^
+  File "C:\Users\CMC\AppData\Local\Programs\Python\Python313\Lib\unittest\mock.py", line 1169, in __call__
+    return self._mock_call(*args, **kwargs)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Users\CMC\AppData\Local\Programs\Python\Python313\Lib\unittest\mock.py", line 1173, in _mock_call
+    return self._execute_mock_call(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Users\CMC\AppData\Local\Programs\Python\Python313\Lib\unittest\mock.py", line 1234, in _execute_mock_call
+    raise effect
+OSError: worker failed
+[2026-11-24T06:47:06] [INFO] [sender.transmitter] Transmitted bit=1 state=load duration=0.010s
+[2026-11-24T06:47:06] [INFO] [sender.transmitter] Transmitted bit=0 state=idle duration=0.010s
+[2026-11-24T06:47:06] [INFO] [sender.transmitter] Transmitted bit=1 state=load duration=0.010s
+[2026-11-24T06:47:06] [INFO] [sender.transmitter] Transmitted bit=1 state=load duration=0.010s
+[2026-11-24T06:47:06] [INFO] [sender.transmitter] Transmitted bit=0 state=idle duration=0.010s
+[2026-11-24T06:47:06] [INFO] [sender.transmitter] Transmitted bit=1 state=load duration=0.010s
+[2026-11-24T06:47:06] [INFO] [sender.transmitter] Transmitted bit=0 state=idle duration=0.010s
+[2026-11-24T06:47:06] [INFO] [sender.transmitter] Transmitted bit=1 state=load duration=0.010s
+[2026-11-24T06:47:06] [INFO] [sender.transmitter] Transmitted bit=0 state=idle duration=0.010s
+[2026-11-24T06:47:06] [INFO] [sender.transmitter] Transmitted bit=1 state=load duration=0.010s
+[2026-11-24T06:47:06] [INFO] [sender.transmitter] Transmitted bit=0 state=idle duration=0.010s
+[2026-11-24T06:47:06] [INFO] [sender.transmitter] Transmitted bit=0 state=idle duration=0.010s
+[2026-11-24T06:47:06] [INFO] [sender.transmitter] Transmitted bit=1 state=load duration=0.010s
+[2026-11-24T06:47:06] [INFO] [sender.transmitter] Transmitted bit=1 state=load duration=0.010s
+[2026-11-24T06:47:06] [INFO] [sender.transmitter] Transmitted bit=0 state=idle duration=0.010s
+[2026-11-24T06:47:06] [INFO] [sender.transmitter] Transmitted bit=1 state=load duration=0.010s
+[2026-11-24T06:47:06] [INFO] [sender.transmitter] Transmitted bit=1 state=load duration=0.010s
+[2026-11-24T06:47:06] [INFO] [sender.transmitter] Transmitted bit=1 state=load duration=0.010s
+[2026-11-24T06:47:06] [INFO] [sender.transmitter] Transmitted bit=1 state=load duration=0.010s
+[2026-11-24T06:47:06] [INFO] [sender.transmitter] Transmitted bit=0 state=idle duration=0.010s
+[2026-11-24T06:47:06] [INFO] [sender.transmitter] Transmitted bit=1 state=load duration=0.010s
+[2026-11-24T06:47:06] [INFO] [sender.transmitter] Transmitted bit=1 state=load duration=0.010s
+[2026-11-24T06:47:06] [INFO] [sender.transmitter] Transmitted bit=0 state=idle duration=0.010s
+[2026-11-24T06:47:06] [INFO] [sender.transmitter] Transmitted bit=1 state=load duration=0.010s
+[2026-11-24T06:47:06] [INFO] [sender.transmitter] Transmitted bit=0 state=idle duration=0.010s
+[2026-11-24T06:47:06] [INFO] [sender.transmitter] Transmitted bit=1 state=load duration=0.010s
+[2026-11-24T06:47:06] [INFO] [sender.transmitter] Transmitted bit=1 state=load duration=0.010s
+[2026-11-24T06:47:06] [INFO] [sender.transmitter] Transmitted bit=1 state=load duration=0.010s
+[2026-11-24T06:47:06] [INFO] [sender.transmitter] Transmitted bit=1 state=load duration=0.010s
+[2026-11-24T06:47:06] [INFO] [sender.transmitter] Transmitted bit=0 state=idle duration=0.010s
+[2026-11-24T06:47:06] [INFO] [sender.transmitter] Transmitted bit=1 state=load duration=0.010s
+[2026-11-24T06:47:06] [INFO] [sender.transmitter] Transmitted bit=1 state=load duration=0.010s
+[2026-11-24T06:47:06] [INFO] [sender.transmitter] Transmitted bit=0 state=idle duration=0.010s
+[2026-11-24T06:47:06] [INFO] [sender.transmitter] Transmitted bit=1 state=load duration=0.010s
+[2026-11-24T06:47:06] [INFO] [sender.transmitter] Transmitted bit=1 state=load duration=0.010s
+[2026-11-24T06:47:06] [INFO] [sender.transmitter] Transmitted bit=1 state=load duration=0.010s
+[2026-11-24T06:47:06] [INFO] [sender.transmitter] Transmitted bit=1 state=load duration=0.010s
+[2026-11-24T06:47:06] [INFO] [sender.transmitter] Transmitted bit=0 state=idle duration=0.010s
+[2026-11-24T06:47:06] [INFO] [sender.transmitter] Transmitted bit=1 state=load duration=0.010s
+[2026-11-24T06:47:06] [INFO] [sender.transmitter] Transmitted bit=0 state=idle duration=0.010s
+[2026-11-24T06:47:06] [INFO] [sender.transmitter] Transmitted bit=1 state=load duration=0.010s
+[2026-11-24T06:47:06] [INFO] [sender.transmitter] Transmitted bit=1 state=load duration=0.010s
+[2026-11-24T06:47:06] [INFO] [sender.transmitter] Transmitted bit=0 state=idle duration=0.010s
+[2026-11-24T06:47:06] [INFO] [sender.transmitter] Transmitted bit=1 state=load duration=0.010s
+[2026-11-24T06:47:06] [INFO] [sender.transmitter] Transmitted bit=1 state=load duration=0.010s
+[2026-11-24T06:47:06] [INFO] [sender.transmitter] Transmitted bit=1 state=load duration=0.010s
+[2026-11-24T06:47:06] [INFO] [sender.transmitter] Transmitted bit=1 state=load duration=0.010s

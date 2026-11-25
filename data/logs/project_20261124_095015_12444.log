@@ -1,0 +1,9 @@
+[2026-11-24T09:50:15] [INFO] [shared.logger] Logging initialized -> C:\Users\CMC\Desktop\Grop and Drop\data\logs\project_20261124_095015_12444.log
+[2026-11-24T09:50:15] [INFO] [ack.ack_server] Starting ACK server on 0.0.0.0:8888
+[2026-11-24T09:50:15] [INFO] [werkzeug] WARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:8888
+ * Running on http://10.0.1.243:8888
+[2026-11-24T09:50:15] [INFO] [werkzeug] Press CTRL+C to quit
+[2026-11-24T09:50:51] [INFO] [werkzeug] 127.0.0.1 - - [24/Nov/2026 09:50:51] "GET / HTTP/1.1" 404 -
+[2026-11-24T09:50:57] [INFO] [werkzeug] 10.0.1.243 - - [24/Nov/2026 09:50:57] "GET / HTTP/1.1" 404 -

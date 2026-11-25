@@ -1,0 +1,15 @@
+[2026-11-24T10:20:28] [INFO] [shared.logger] Logging initialized -> C:\Users\CMC\Desktop\Grop and Drop\data\logs\project_20261124_102028_16436.log
+[2026-11-24T10:20:28] [INFO] [gestures.gesture_engine] Loaded 9 gestures from C:\Users\CMC\Desktop\Grop and Drop\gestures\gestures.json (version=1.0, tolerance=0)
+[2026-11-24T10:20:28] [INFO] [sender.cpu_load] CPU state idle for 1.000 seconds
+[2026-11-24T10:20:29] [INFO] [sender.transmitter] Transmitted bit=0 state=idle duration=1.000s
+[2026-11-24T10:20:29] [INFO] [sender.cpu_load] CPU state idle for 1.000 seconds
+[2026-11-24T10:20:30] [INFO] [sender.transmitter] Transmitted bit=0 state=idle duration=1.000s
+[2026-11-24T10:20:30] [INFO] [sender.cpu_load] CPU state idle for 1.000 seconds
+[2026-11-24T10:20:31] [INFO] [sender.transmitter] Transmitted bit=0 state=idle duration=1.000s
+[2026-11-24T10:20:31] [INFO] [sender.cpu_load] CPU load active: target=100%, workers=12
+[2026-11-24T10:20:32] [INFO] [sender.cpu_load] CPU load stopped
+[2026-11-24T10:20:32] [INFO] [sender.transmitter] Transmitted bit=1 state=load duration=1.000s
+[2026-11-24T10:20:32] [INFO] [sender.transmitter] Transmission log saved: C:\Users\CMC\Desktop\Grop and Drop\data\recordings\transmit_log_2026-11-24T21-20-28-182791+00-00.json
+[2026-11-24T10:20:32] [INFO] [airgesture.cli] Sending: wave
+[2026-11-24T10:20:32] [INFO] [airgesture.cli] Send complete
+[2026-11-24T10:20:32] [INFO] [sender.cpu_load] CPU load controller cleaned up

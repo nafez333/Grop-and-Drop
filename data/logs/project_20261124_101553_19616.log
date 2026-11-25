@@ -1,0 +1,3 @@
+[2026-11-24T10:15:53] [INFO] [shared.logger] Logging initialized -> C:\Users\CMC\Desktop\Grop and Drop\data\logs\project_20261124_101553_19616.log
+[2026-11-24T10:15:55] [INFO] [airgesture.cli] Serving C:\Users\CMC\Desktop\Grop and Drop\receiver\web on port 8080
+[2026-11-24T10:34:25] [INFO] [airgesture.cli] Server stopped

@@ -1,0 +1,11 @@
+[2026-11-24T10:21:00] [INFO] [shared.logger] Logging initialized -> C:\Users\CMC\Desktop\Grop and Drop\data\logs\project_20261124_102100_9256.log
+[2026-11-24T10:21:00] [INFO] [gestures.gesture_engine] Loaded 9 gestures from C:\Users\CMC\Desktop\Grop and Drop\gestures\gestures.json (version=1.0, tolerance=0)
+[2026-11-24T10:21:00] [INFO] [airgesture.cli]   circle | bits=0011 | aliases=[loop, rotate] | cat=action | prio=2
+[2026-11-24T10:21:00] [INFO] [airgesture.cli]   fist | bits=1000 | aliases=[stop, halt] | cat=control | prio=1
+[2026-11-24T10:21:00] [INFO] [airgesture.cli]   nod | bits=0101 | aliases=[yes, confirm, accept] | cat=positive | prio=1
+[2026-11-24T10:21:00] [INFO] [airgesture.cli]   open_palm | bits=1001 | aliases=[pause, wait] | cat=control | prio=2
+[2026-11-24T10:21:00] [INFO] [airgesture.cli]   shake | bits=0100 | aliases=[no, reject, cancel] | cat=negative | prio=1
+[2026-11-24T10:21:00] [INFO] [airgesture.cli]   swipe_left | bits=0110 | aliases=[previous, back] | cat=navigation | prio=2
+[2026-11-24T10:21:00] [INFO] [airgesture.cli]   swipe_right | bits=0111 | aliases=[next, forward] | cat=navigation | prio=2
+[2026-11-24T10:21:00] [INFO] [airgesture.cli]   tap | bits=0010 | aliases=[click, select] | cat=action | prio=1
+[2026-11-24T10:21:00] [INFO] [airgesture.cli]   wave | bits=0001 | aliases=[hello, hi, greet] | cat=greeting | prio=1
